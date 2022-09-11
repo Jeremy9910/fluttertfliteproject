@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late List<dynamic> _recognitions;
+  var _recognitions = [];
   int _imageHeight = 0;
   int _imageWidth = 0;
   String _model = "";
@@ -29,30 +29,10 @@ class _HomePageState extends State<HomePage> {
 
   loadModel() async {
     String res;
-    switch (_model) {
-      case yolo:
-        res = (await Tflite.loadModel(
-          model: "assets/yolov2_tiny.tflite",
-          labels: "assets/yolov2_tiny.txt",
-        ))!;
-        break;
-
-      case mobilenet:
-        res = (await Tflite.loadModel(
-            model: "assets/mobilenet_v1_1.0_224.tflite",
-            labels: "assets/mobilenet_v1_1.0_224.txt"))!;
-        break;
-
-      case posenet:
-        res = (await Tflite.loadModel(
-            model: "assets/posenet_mv1_075_float_from_checkpoints.tflite"))!;
-        break;
-
-      default:
-        res = (await Tflite.loadModel(
-            model: "assets/ssd_mobilenet.tflite",
-            labels: "assets/ssd_mobilenet.txt"))!;
-    }
+    res = (await Tflite.loadModel(
+      model: "assets/best-fp16.tflite",
+      labels: "assets/label.txt",
+    ))!;
     print(res);
   }
 
@@ -78,26 +58,13 @@ class _HomePageState extends State<HomePage> {
       body: _model == ""
           ? Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  ElevatedButton(
-                    child: const Text(ssd),
-                    onPressed: () => onSelect(ssd),
-                  ),
-                  ElevatedButton(
-                    child: const Text(yolo),
-                    onPressed: () => onSelect(yolo),
-                  ),
-                  ElevatedButton(
-                    child: const Text(mobilenet),
-                    onPressed: () => onSelect(mobilenet),
-                  ),
-                  ElevatedButton(
-                    child: const Text(posenet),
-                    onPressed: () => onSelect(posenet),
-                  ),
-                ],
-              ),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ElevatedButton(
+                      child: const Text(Yolov5),
+                      onPressed: () => onSelect(Yolov5),
+                    ),
+                  ]),
             )
           : Stack(
               children: [
